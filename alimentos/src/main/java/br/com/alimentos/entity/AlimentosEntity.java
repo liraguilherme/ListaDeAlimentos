@@ -5,14 +5,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
+
 
 
 @Entity
 @Table(name = "alimentos")
-public class AlimentosEntity {
+public class AlimentosEntity extends RepresentationModel<AlimentosEntity>{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
