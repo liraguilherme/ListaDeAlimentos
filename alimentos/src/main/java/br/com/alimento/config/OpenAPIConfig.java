@@ -11,8 +11,8 @@ import io.swagger.v3.oas.models.info.License;
 @Configuration
 public class OpenAPIConfig {
 	
-	@Bean
-   public OpenAPI customOpenAPI() {
+@Bean
+   private OpenAPI customOpenAPI() {
 	   return new OpenAPI()
 			   .info(new Info()
 			   .title("Alimentos API com Java e Spring Boot")

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import br.com.alimento.util.MediaType;
 import br.com.alimentos.entity.AlimentosEntity;
 import br.com.alimentos.service.AlimentosService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +39,9 @@ public class AlimentosController {
 		this.service = service;
 	}
 	
-	@PostMapping
+	@PostMapping(consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML},
+			produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	
 	@Operation(summary = "Adicionando um novo Alimento", description = "Adicionando um novo Alimento",
 	tags = {"Alimentos"},
 	responses = {
@@ -47,16 +51,14 @@ public class AlimentosController {
 			@ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
 			@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
 			@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
-
-	})
-	
+			})
 	
 	public ResponseEntity<AlimentosEntity> create(@RequestBody AlimentosEntity entity){
 		return ResponseEntity.status(201).body(service.create(entity));
 		
 	}
 	
-	@GetMapping
+	@GetMapping(produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Operation(summary = "Buscar todos Alimentos", description = "Buscar todos Alimentos",
 	 tags = {"Alimentos"}, 
 	 responses = {
@@ -71,6 +73,7 @@ public class AlimentosController {
 			 @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
 			
 	})
+	
 	public ResponseEntity<List<AlimentosEntity>> GetAllAlimentos(){
        List<AlimentosEntity> allAlimentos = service.GetAllAlimentos();
        
@@ -78,13 +81,10 @@ public class AlimentosController {
        repository.add(linkTo(methodOn(AlimentosController.class).findById(repository.getId()))
     		   .withSelfRel())).toList();
 	 
-		
-		return ResponseEntity.status(200).body(service.GetAllAlimentos());
+			return ResponseEntity.status(200).body(service.GetAllAlimentos());
 				}
 
-		
-		
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Operation(summary = "Buscar um alimento", description = "Buscar um alimento",
 	 tags = {"Alimentos"}, 
 	 responses = {
@@ -97,7 +97,7 @@ public class AlimentosController {
 			 @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
 			 @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
 
-	 })
+	 }) 
 	
 	public ResponseEntity<?> findById(@PathVariable(value = "id") Long id){
 		AlimentosEntity entity = service.GetById(id);
@@ -108,7 +108,9 @@ public class AlimentosController {
 		return ResponseEntity.status(200).body(entity);
 	}
 	
-	@PutMapping
+	@PutMapping(consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML},
+			produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+
 	@Operation(summary = "Atualizando o alimento", description = "Atualizando o alimento",
 	  tags = {"Alimentos"}, 
 	  responses = {
@@ -120,6 +122,7 @@ public class AlimentosController {
 	 		 @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
 	 		 @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
 	  })
+	
 	public ResponseEntity<AlimentosEntity> update(@RequestBody AlimentosEntity entity){
 	
 		return ResponseEntity.status(200).body(service.update(entity));
